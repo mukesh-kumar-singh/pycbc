@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.distributions.qnm &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>pycbc.distributions.qnm &mdash; PyCBC 477e04 documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -216,6 +220,7 @@
 <span class="c1"># 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.</span>
 
 
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">pycbc</span>
 <span class="kn">from</span> <span class="nn">pycbc</span> <span class="k">import</span> <span class="n">conversions</span><span class="p">,</span> <span class="n">boundaries</span>
@@ -348,11 +353,17 @@
     <span class="k">def</span> <span class="nf">_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
         <span class="n">f0</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rdfreq</span><span class="p">]</span>
         <span class="n">tau</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">damping_time</span><span class="p">]</span>
+        <span class="c1"># check if we need to specify a particular mode (l,m) != (2,2)</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;f_\d</span><span class="si">{3}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdfreq</span><span class="p">):</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rdfreq</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;f_&#39;</span><span class="p">)</span>
+            <span class="n">l</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mode</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">mode</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">l</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span>
         <span class="c1"># temporarily silence invalid warnings... these will just be ruled out</span>
         <span class="c1"># automatically</span>
         <span class="n">orig</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-        <span class="n">mf</span> <span class="o">=</span> <span class="n">conversions</span><span class="o">.</span><span class="n">final_mass_from_f0_tau</span><span class="p">(</span><span class="n">f0</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
-        <span class="n">sf</span> <span class="o">=</span> <span class="n">conversions</span><span class="o">.</span><span class="n">final_spin_from_f0_tau</span><span class="p">(</span><span class="n">f0</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+        <span class="n">mf</span> <span class="o">=</span> <span class="n">conversions</span><span class="o">.</span><span class="n">final_mass_from_f0_tau</span><span class="p">(</span><span class="n">f0</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">sf</span> <span class="o">=</span> <span class="n">conversions</span><span class="o">.</span><span class="n">final_spin_from_f0_tau</span><span class="p">(</span><span class="n">f0</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
         <span class="n">isin</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_mass_bounds</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">(</span><span class="n">mf</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">final_spin_bounds</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">(</span><span class="n">sf</span><span class="p">))</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="o">**</span><span class="n">orig</span><span class="p">)</span>
