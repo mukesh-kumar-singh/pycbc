@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.inference.io package &mdash; PyCBC e0dace documentation</title>
+  <title>pycbc.inference.io package &mdash; PyCBC 1.14.dev1 documentation</title>
   
 
   
@@ -62,10 +62,6 @@
 
           
             
-            
-              <div class="version">
-                1.14.0
-              </div>
             
           
 
@@ -1202,7 +1198,7 @@ MCMCMetadatIO.</p>
 
 <dl class="class">
 <dt id="pycbc.inference.io.base_multitemper.ParseTempsArg">
-<em class="property">class </em><code class="descclassname">pycbc.inference.io.base_multitemper.</code><code class="descname">ParseTempsArg</code><span class="sig-paren">(</span><em>type=&lt;type 'str'&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/io/base_multitemper.html#ParseTempsArg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.io.base_multitemper.ParseTempsArg" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pycbc.inference.io.base_multitemper.</code><code class="descname">ParseTempsArg</code><span class="sig-paren">(</span><em>type=&lt;class 'str'&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/io/base_multitemper.html#ParseTempsArg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.io.base_multitemper.ParseTempsArg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Action" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Action</span></code></a></p>
 <p>Argparse action that will parse temps argument.</p>
 <p>If the provided argument is ‘all’, sets ‘all’ in the namespace dest. If a
@@ -1479,6 +1475,32 @@ write all of the keys in the <code class="docutils literal notranslate"><span cl
 <dl class="method">
 <dt id="pycbc.inference.io.posterior.PosteriorFile.write_samples">
 <code class="descname">write_samples</code><span class="sig-paren">(</span><em>samples</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/io/posterior.html#PosteriorFile.write_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.io.posterior.PosteriorFile.write_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>This should write all of the provided samples.</p>
+<p>This function should be used to write both samples and model stats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>samples</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Samples should be provided as a dictionary of numpy arrays.</li>
+<li><strong>**kwargs</strong> – Any other keyword args the sampler needs to write data.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pycbc.inference.io.posterior.read_raw_samples_from_file">
+<code class="descclassname">pycbc.inference.io.posterior.</code><code class="descname">read_raw_samples_from_file</code><span class="sig-paren">(</span><em>fp</em>, <em>fields</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/io/posterior.html#read_raw_samples_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.io.posterior.read_raw_samples_from_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pycbc.inference.io.posterior.write_samples_to_file">
+<code class="descclassname">pycbc.inference.io.posterior.</code><code class="descname">write_samples_to_file</code><span class="sig-paren">(</span><em>fp</em>, <em>samples</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/io/posterior.html#write_samples_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.io.posterior.write_samples_to_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes samples to the given file.</p>
 <p>Results are written to <code class="docutils literal notranslate"><span class="pre">samples_group/{vararg}</span></code>, where <code class="docutils literal notranslate"><span class="pre">{vararg}</span></code>
 is the name of a model params. The samples are written as an
@@ -1488,6 +1510,7 @@ array of length <code class="docutils literal notranslate"><span class="pre">nit
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fp</strong> (<em>self</em>) – Pass the ‘self’ from BaseInferenceFile class.</li>
 <li><strong>samples</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – The samples to write. Each array in the dictionary should have
 length niterations.</li>
 <li><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><em>optional</em>) – Only write the specified parameters to the file. If None, will
@@ -1497,8 +1520,6 @@ write all of the keys in the <code class="docutils literal notranslate"><span cl
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -1569,7 +1590,7 @@ from posterior-only TXT files.</p>
 <dl class="exception">
 <dt id="pycbc.inference.io.NoInputFileError">
 <em class="property">exception </em><code class="descclassname">pycbc.inference.io.</code><code class="descname">NoInputFileError</code><a class="reference internal" href="_modules/pycbc/inference/io.html#NoInputFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.io.NoInputFileError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Raised in custom argparse Actions by arguments needing input-files when
 no file(s) were provided.</p>
 </dd></dl>
@@ -1898,7 +1919,7 @@ samples.</p>
     <p>
         &copy; Copyright 2015, 2016, 2017, Alexander Nitz, Ian Harry, Christopher M. Biwer, Duncan A.  Brown, Josh Willis, and Tito Dal Canton
       <span class="lastupdated">
-        Last updated on Jun 19, 2019.
+        Last updated on Jun 21, 2019.
       </span>
 
     </p>
