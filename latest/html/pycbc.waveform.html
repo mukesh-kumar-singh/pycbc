@@ -1279,9 +1279,7 @@ pycbc.waveform.cbc_parameters.</li>
 <dl class="attribute">
 <dt id="pycbc.waveform.generator.BaseGenerator.variable_args">
 <code class="descname">variable_args</code><a class="headerlink" href="#pycbc.waveform.generator.BaseGenerator.variable_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>The list of names of variable arguments. Values passed to the
-<cite>generate_from_args</cite> function must be in the same order as the
-arguments in this list.</p>
+<dd><p>The list of names of variable arguments.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1334,13 +1332,6 @@ arguments.</p>
 <code class="descname">generate</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/waveform/generator.html#BaseGenerator.generate"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Generates a waveform from the keyword args. The current params
 are updated with the given kwargs, then the generator is called.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycbc.waveform.generator.BaseGenerator.generate_from_args">
-<code class="descname">generate_from_args</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/waveform/generator.html#BaseGenerator.generate_from_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.waveform.generator.BaseGenerator.generate_from_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a waveform. The list of arguments must be in the same
-order as self’s variable_args attribute.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1586,14 +1577,6 @@ function.</p>
 <code class="descname">generate</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/waveform/generator.html#FDomainDetFrameGenerator.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.waveform.generator.FDomainDetFrameGenerator.generate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a waveform, applies a time shift and the detector response
 function from the given kwargs.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pycbc.waveform.generator.FDomainDetFrameGenerator.generate_from_args">
-<code class="descname">generate_from_args</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/waveform/generator.html#FDomainDetFrameGenerator.generate_from_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.waveform.generator.FDomainDetFrameGenerator.generate_from_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a waveform, applies a time shift and the detector response
-function from the given args.</p>
-<p>The args are assumed to be in the same order as the variable args.</p>
 </dd></dl>
 
 <dl class="attribute">

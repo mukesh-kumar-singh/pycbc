@@ -434,8 +434,17 @@
                            <span class="s2">&quot;detector in the `[model]` section, where IFO is &quot;</span>
                            <span class="s2">&quot;the name of the detector.&quot;</span><span class="p">)</span>
         <span class="c1"># create the waveform generator</span>
+        <span class="c1"># the waveform generator will get the variable_params + the output</span>
+        <span class="c1"># of the waveform transforms, so we&#39;ll add them to the list of</span>
+        <span class="c1"># parameters</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">waveform_transforms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">wfoutputs</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">outputs</span>
+                                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">waveform_transforms</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">wfoutputs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_params</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">wfoutputs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_waveform_generator</span> <span class="o">=</span> <span class="n">create_waveform_generator</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">variable_params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">recalibration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">recalibration</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">recalibration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">recalibration</span><span class="p">,</span>
             <span class="n">gates</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gates</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">static_params</span><span class="p">)</span>
         <span class="c1"># check that the data sets all have the same lengths</span>
         <span class="n">dlens</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>

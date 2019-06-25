@@ -270,9 +270,7 @@
 <span class="sd">    generator : function</span>
 <span class="sd">        The function that is called for waveform generation.</span>
 <span class="sd">    variable_args : tuple</span>
-<span class="sd">        The list of names of variable arguments. Values passed to the</span>
-<span class="sd">        `generate_from_args` function must be in the same order as the</span>
-<span class="sd">        arguments in this list.</span>
+<span class="sd">        The list of names of variable arguments.</span>
 <span class="sd">    frozen_params : dict</span>
 <span class="sd">        A dictionary of the frozen keyword arguments that are always passed</span>
 <span class="sd">        to the waveform generator function.</span>
@@ -300,14 +298,6 @@
     <span class="k">def</span> <span class="nf">static_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary of the static arguments.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frozen_params</span>
-
-<div class="viewcode-block" id="BaseGenerator.generate_from_args"><a class="viewcode-back" href="../../../pycbc.waveform.html#pycbc.waveform.generator.BaseGenerator.generate_from_args">[docs]</a>    <span class="k">def</span> <span class="nf">generate_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generates a waveform. The list of arguments must be in the same</span>
-<span class="sd">        order as self&#39;s variable_args attribute.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_args</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable argument length mismatch&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_args</span><span class="p">,</span> <span class="n">args</span><span class="p">)))</span></div>
 
 <div class="viewcode-block" id="BaseGenerator.generate"><a class="viewcode-back" href="../../../pycbc.waveform.html#pycbc.waveform.generator.BaseGenerator.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a waveform from the keyword args. The current params</span>
@@ -734,14 +724,6 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_lal</span><span class="o">.</span><span class="n">LIGOTimeGPS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_epoch</span><span class="p">)</span>
-
-<div class="viewcode-block" id="FDomainDetFrameGenerator.generate_from_args"><a class="viewcode-back" href="../../../pycbc.waveform.html#pycbc.waveform.generator.FDomainDetFrameGenerator.generate_from_args">[docs]</a>    <span class="k">def</span> <span class="nf">generate_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generates a waveform, applies a time shift and the detector response</span>
-<span class="sd">        function from the given args.</span>
-
-<span class="sd">        The args are assumed to be in the same order as the variable args.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_args</span><span class="p">,</span> <span class="n">args</span><span class="p">)))</span></div>
 
 <div class="viewcode-block" id="FDomainDetFrameGenerator.generate"><a class="viewcode-back" href="../../../pycbc.waveform.html#pycbc.waveform.generator.FDomainDetFrameGenerator.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a waveform, applies a time shift and the detector response</span>
