@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc_make_inference_workflow: A parameter estimation workflow generator &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>pycbc_make_inference_workflow: A parameter estimation workflow generator &mdash; PyCBC a0e877 documentation</title>
   
 
   
@@ -62,6 +62,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -433,7 +437,8 @@
 <p>A sample configuration file for parameter estimation on the ringdown is:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[model]</span>
 <span class="na">name</span> <span class="o">=</span> <span class="s">gaussian_noise</span>
-<span class="na">low-frequency-cutoff</span> <span class="o">=</span> <span class="s">20</span>
+<span class="na">h1-low-frequency-cutoff</span> <span class="o">=</span> <span class="s">20</span>
+<span class="na">l1-low-frequency-cutoff</span> <span class="o">=</span> <span class="s">20</span>
 
 <span class="k">[sampler]</span>
 <span class="na">name</span> <span class="o">=</span> <span class="s">emcee_pt</span>
@@ -607,7 +612,7 @@ pycbc_submit_dax --dax ${WORKFLOW_NAME}.dax \
     <p>
         &copy; Copyright 2015, 2016, 2017, Alexander Nitz, Ian Harry, Christopher M. Biwer, Duncan A.  Brown, Josh Willis, and Tito Dal Canton
       <span class="lastupdated">
-        Last updated on Jun 24, 2019.
+        Last updated on Jun 25, 2019.
       </span>
 
     </p>
