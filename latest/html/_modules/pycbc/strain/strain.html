@@ -656,6 +656,9 @@
 <span class="sd">    -----------</span>
 <span class="sd">    parser : object</span>
 <span class="sd">        OptionParser instance.</span>
+<span class="sd">    gps_times : bool, optional</span>
+<span class="sd">        Include ``--gps-start-time`` and ``--gps-end-time`` options. Default</span>
+<span class="sd">        is True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">data_reading_group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;Options for obtaining h(t)&quot;</span><span class="p">,</span>
@@ -796,7 +799,7 @@
 
 <span class="c1"># FIXME: This repeats almost all of the options above. Any nice way of reducing</span>
 <span class="c1">#        this?</span>
-<div class="viewcode-block" id="insert_strain_option_group_multi_ifo"><a class="viewcode-back" href="../../../pycbc.strain.html#pycbc.strain.strain.insert_strain_option_group_multi_ifo">[docs]</a><span class="k">def</span> <span class="nf">insert_strain_option_group_multi_ifo</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
+<div class="viewcode-block" id="insert_strain_option_group_multi_ifo"><a class="viewcode-back" href="../../../pycbc.strain.html#pycbc.strain.strain.insert_strain_option_group_multi_ifo">[docs]</a><span class="k">def</span> <span class="nf">insert_strain_option_group_multi_ifo</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">gps_times</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Adds the options used to call the pycbc.strain.from_cli function to an</span>
 <span class="sd">    optparser as an OptionGroup. This should be used if you</span>
@@ -806,6 +809,9 @@
 <span class="sd">    -----------</span>
 <span class="sd">    parser : object</span>
 <span class="sd">        OptionParser instance.</span>
+<span class="sd">    gps_times : bool, optional</span>
+<span class="sd">        Include ``--gps-start-time`` and ``--gps-end-time`` options. Default</span>
+<span class="sd">        is True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">data_reading_group_multi</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s2">&quot;Options for obtaining&quot;</span>
@@ -817,14 +823,15 @@
                   <span class="s2">&quot;supports reading from multiple ifos simultaneously.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Required options</span>
-    <span class="n">data_reading_group_multi</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--gps-start-time&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
-                            <span class="n">action</span><span class="o">=</span><span class="n">MultiDetOptionAction</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;IFO:TIME&#39;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The gps start time of the data &quot;</span>
-                                 <span class="s2">&quot;(integer seconds)&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">data_reading_group_multi</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--gps-end-time&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-                            <span class="n">action</span><span class="o">=</span><span class="n">MultiDetOptionAction</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;IFO:TIME&#39;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The gps end time of the data &quot;</span>
-                                 <span class="s2">&quot;(integer seconds)&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">gps_times</span><span class="p">:</span>
+        <span class="n">data_reading_group_multi</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--gps-start-time&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">MultiDetOptionAction</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;IFO:TIME&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The gps start time of the data (integer seconds)&quot;</span><span class="p">)</span>
+        <span class="n">data_reading_group_multi</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--gps-end-time&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">MultiDetOptionAction</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;IFO:TIME&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The gps end time of the data (integer seconds)&quot;</span><span class="p">)</span>
     <span class="n">data_reading_group_multi</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--strain-high-pass&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
                             <span class="n">action</span><span class="o">=</span><span class="n">MultiDetOptionAction</span><span class="p">,</span>
                             <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;IFO:FREQUENCY&#39;</span><span class="p">,</span>

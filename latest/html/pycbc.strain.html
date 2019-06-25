@@ -1325,7 +1325,12 @@ want to use these options in your code.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a>) – OptionParser instance.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a>) – OptionParser instance.</li>
+<li><strong>gps_times</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – Include <code class="docutils literal notranslate"><span class="pre">--gps-start-time</span></code> and <code class="docutils literal notranslate"><span class="pre">--gps-end-time</span></code> options. Default
+is True.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1333,7 +1338,7 @@ want to use these options in your code.</p>
 
 <dl class="function">
 <dt id="pycbc.strain.strain.insert_strain_option_group_multi_ifo">
-<code class="descclassname">pycbc.strain.strain.</code><code class="descname">insert_strain_option_group_multi_ifo</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/strain/strain.html#insert_strain_option_group_multi_ifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.strain.strain.insert_strain_option_group_multi_ifo" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pycbc.strain.strain.</code><code class="descname">insert_strain_option_group_multi_ifo</code><span class="sig-paren">(</span><em>parser</em>, <em>gps_times=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/strain/strain.html#insert_strain_option_group_multi_ifo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.strain.strain.insert_strain_option_group_multi_ifo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds the options used to call the pycbc.strain.from_cli function to an
 optparser as an OptionGroup. This should be used if you
 want to use these options in your code.</p>
@@ -1341,7 +1346,12 @@ want to use these options in your code.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a>) – OptionParser instance.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parser</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><em>object</em></a>) – OptionParser instance.</li>
+<li><strong>gps_times</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – Include <code class="docutils literal notranslate"><span class="pre">--gps-start-time</span></code> and <code class="docutils literal notranslate"><span class="pre">--gps-end-time</span></code> options. Default
+is True.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
