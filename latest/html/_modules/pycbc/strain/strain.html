@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.strain.strain &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>pycbc.strain.strain &mdash; PyCBC 0a06cd documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -1563,7 +1567,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">highpass_samples</span> <span class="o">=</span>  <span class="nb">int</span><span class="p">(</span><span class="n">highpass_samples</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">resample_corruption</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># If using the ldas method</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">factor</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_buffer</span><span class="o">.</span><span class="n">delta_t</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">corruption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highpass_samples</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor</span> <span class="o">+</span> <span class="n">resample_corruption</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">corruption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highpass_samples</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor</span> <span class="o">+</span> <span class="n">resample_corruption</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">psd_corruption</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">psd_inverse_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_corruption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corruption</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">psd_corruption</span>
@@ -1574,7 +1578,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trim_padding</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_corruption</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">trim_padding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_corruption</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">psd_duration</span> <span class="o">=</span> <span class="p">(</span><span class="n">psd_samples</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">psd_segment_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psd_duration</span> <span class="o">=</span> <span class="p">(</span><span class="n">psd_samples</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">psd_segment_length</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reduced_pad</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_corruption</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">trim_padding</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1610,10 +1614,10 @@
         <span class="sd">&quot;&quot;&quot; Recalculate the psd</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">seg_len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">psd_segment_length</span>
+        <span class="n">seg_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">psd_segment_length</span><span class="p">)</span>
         <span class="n">e</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strain</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">e</span> <span class="o">-</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">psd_samples</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span>
-        <span class="n">psd</span> <span class="o">=</span> <span class="n">pycbc</span><span class="o">.</span><span class="n">psd</span><span class="o">.</span><span class="n">welch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strain</span><span class="p">[</span><span class="n">s</span><span class="p">:</span><span class="n">e</span><span class="p">],</span> <span class="n">seg_len</span><span class="o">=</span><span class="n">seg_len</span><span class="p">,</span> <span class="n">seg_stride</span><span class="o">=</span><span class="n">seg_len</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">e</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psd_samples</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">seg_len</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">psd</span> <span class="o">=</span> <span class="n">pycbc</span><span class="o">.</span><span class="n">psd</span><span class="o">.</span><span class="n">welch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strain</span><span class="p">[</span><span class="n">s</span><span class="p">:</span><span class="n">e</span><span class="p">],</span> <span class="n">seg_len</span><span class="o">=</span><span class="n">seg_len</span><span class="p">,</span> <span class="n">seg_stride</span><span class="o">=</span><span class="n">seg_len</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="n">psd</span><span class="o">.</span><span class="n">dist</span> <span class="o">=</span> <span class="n">spa_distance</span><span class="p">(</span><span class="n">psd</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_frequency_cutoff</span><span class="p">)</span> <span class="o">*</span> <span class="n">pycbc</span><span class="o">.</span><span class="n">DYN_RANGE_FAC</span>
 

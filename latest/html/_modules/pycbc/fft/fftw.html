@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.fft.fftw &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>pycbc.fft.fftw &mdash; PyCBC 0a06cd documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -381,41 +385,33 @@
 
 <span class="c1"># Add the ability to read/store wisdom to filenames</span>
 
-<div class="viewcode-block" id="import_single_wisdom_from_filename"><a class="viewcode-back" href="../../../pycbc.fft.html#pycbc.fft.fftw.import_single_wisdom_from_filename">[docs]</a><span class="k">def</span> <span class="nf">import_single_wisdom_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="wisdom_io"><a class="viewcode-back" href="../../../pycbc.fft.html#pycbc.fft.fftw.wisdom_io">[docs]</a><span class="k">def</span> <span class="nf">wisdom_io</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">precision</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Import or export an FFTW plan for single or double precision.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_fftw_threaded_set</span><span class="p">:</span>
         <span class="n">set_threads_backend</span><span class="p">()</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">float_lib</span><span class="o">.</span><span class="n">fftwf_import_wisdom_from_filename</span>
+    <span class="n">fmap</span> <span class="o">=</span> <span class="p">{(</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;import&#39;</span><span class="p">):</span> <span class="n">float_lib</span><span class="o">.</span><span class="n">fftwf_import_wisdom_from_filename</span><span class="p">,</span>
+            <span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;export&#39;</span><span class="p">):</span> <span class="n">float_lib</span><span class="o">.</span><span class="n">fftwf_export_wisdom_to_filename</span><span class="p">,</span>
+            <span class="p">(</span><span class="s1">&#39;double&#39;</span><span class="p">,</span> <span class="s1">&#39;import&#39;</span><span class="p">):</span> <span class="n">double_lib</span><span class="o">.</span><span class="n">fftw_import_wisdom_from_filename</span><span class="p">,</span>
+            <span class="p">(</span><span class="s1">&#39;double&#39;</span><span class="p">,</span> <span class="s1">&#39;export&#39;</span><span class="p">):</span> <span class="n">double_lib</span><span class="o">.</span><span class="n">fftw_export_wisdom_to_filename</span><span class="p">}</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">fmap</span><span class="p">[(</span><span class="n">precision</span><span class="p">,</span> <span class="n">action</span><span class="p">)]</span>
     <span class="n">f</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">]</span>
-    <span class="n">retval</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">retval</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
     <span class="k">if</span> <span class="n">retval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Could not import wisdom from file </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">((</span><span class="s1">&#39;Could not </span><span class="si">{0}</span><span class="s1"> wisdom &#39;</span>
+                            <span class="s1">&#39;from file </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="import_single_wisdom_from_filename"><a class="viewcode-back" href="../../../pycbc.fft.html#pycbc.fft.fftw.import_single_wisdom_from_filename">[docs]</a><span class="k">def</span> <span class="nf">import_single_wisdom_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">wisdom_io</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;import&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="import_double_wisdom_from_filename"><a class="viewcode-back" href="../../../pycbc.fft.html#pycbc.fft.fftw.import_double_wisdom_from_filename">[docs]</a><span class="k">def</span> <span class="nf">import_double_wisdom_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">_fftw_threaded_set</span><span class="p">:</span>
-        <span class="n">set_threads_backend</span><span class="p">()</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">double_lib</span><span class="o">.</span><span class="n">fftw_import_wisdom_from_filename</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">]</span>
-    <span class="n">retval</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">retval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Could not import wisdom from file </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
+    <span class="n">wisdom_io</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;double&#39;</span><span class="p">,</span> <span class="s1">&#39;import&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="export_single_wisdom_to_filename"><a class="viewcode-back" href="../../../pycbc.fft.html#pycbc.fft.fftw.export_single_wisdom_to_filename">[docs]</a><span class="k">def</span> <span class="nf">export_single_wisdom_to_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">_fftw_threaded_set</span><span class="p">:</span>
-        <span class="n">set_threads_backend</span><span class="p">()</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">float_lib</span><span class="o">.</span><span class="n">fftwf_export_wisdom_to_filename</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">]</span>
-    <span class="n">retval</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">retval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Could not export wisdom to file </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
+    <span class="n">wisdom_io</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;export&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="export_double_wisdom_to_filename"><a class="viewcode-back" href="../../../pycbc.fft.html#pycbc.fft.fftw.export_double_wisdom_to_filename">[docs]</a><span class="k">def</span> <span class="nf">export_double_wisdom_to_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">_fftw_threaded_set</span><span class="p">:</span>
-        <span class="n">set_threads_backend</span><span class="p">()</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">double_lib</span><span class="o">.</span><span class="n">fftw_export_wisdom_to_filename</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">]</span>
-    <span class="n">retval</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">retval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Could not export wisdom to file </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
+    <span class="n">wisdom_io</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;double&#39;</span><span class="p">,</span> <span class="s1">&#39;export&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="set_planning_limit"><a class="viewcode-back" href="../../../pycbc.fft.html#pycbc.fft.fftw.set_planning_limit">[docs]</a><span class="k">def</span> <span class="nf">set_planning_limit</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_fftw_threaded_set</span><span class="p">:</span>

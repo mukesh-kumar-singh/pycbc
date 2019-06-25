@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.events.ranking &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>pycbc.events.ranking &mdash; PyCBC 0a06cd documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -257,7 +261,8 @@
 <span class="sd">    variation statistic &quot;&quot;&quot;</span>
     <span class="n">nsnr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">newsnr_sgveto</span><span class="p">(</span><span class="n">snr</span><span class="p">,</span> <span class="n">bchisq</span><span class="p">,</span> <span class="n">sgchisq</span><span class="p">),</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">psd_var_val</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">psd_var_val</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">lgc</span> <span class="o">=</span> <span class="n">psd_var_val</span> <span class="o">&gt;=</span> <span class="mf">1.8</span>
+    <span class="c1"># 1.2 is the expected maximum psd_var_val over gaussian noise.</span>
+    <span class="n">lgc</span> <span class="o">=</span> <span class="n">psd_var_val</span> <span class="o">&gt;=</span> <span class="mf">1.2</span>
     <span class="n">nsnr</span><span class="p">[</span><span class="n">lgc</span><span class="p">]</span> <span class="o">=</span> <span class="n">nsnr</span><span class="p">[</span><span class="n">lgc</span><span class="p">]</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">psd_var_val</span><span class="p">[</span><span class="n">lgc</span><span class="p">])</span>
 
     <span class="c1"># If snr input is float, return a float. Otherwise return numpy array.</span>

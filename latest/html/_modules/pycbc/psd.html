@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.psd &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>pycbc.psd &mdash; PyCBC 0a06cd documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -404,24 +408,28 @@
                                   <span class="s2">&quot;to you, then it is probably safe to &quot;</span>
                                   <span class="s2">&quot;ignore this option.&quot;</span><span class="p">)</span>
     <span class="c1"># Options for PSD variation</span>
+    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-segment&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+                             <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Length of segment &quot;</span>
+                             <span class="s2">&quot;for mean square calculation of PSD variation.&quot;</span><span class="p">)</span>
     <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-short-segment&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
                              <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Length of short segment &quot;</span>
-                             <span class="s2">&quot;when calculating the PSD variability.&quot;</span><span class="p">)</span>
+                             <span class="s2">&quot;for outliers removal in PSD variability &quot;</span>
+                             <span class="s2">&quot;calculation.&quot;</span><span class="p">)</span>
     <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-long-segment&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
                              <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Length of long segment &quot;</span>
                              <span class="s2">&quot;when calculating the PSD variability.&quot;</span><span class="p">)</span>
-    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-short-psd-duration&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-psd-duration&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
                              <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Duration of short &quot;</span>
                              <span class="s2">&quot;segments for PSD estimation.&quot;</span><span class="p">)</span>
-    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-short-psd-stride&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-psd-stride&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
                              <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Separation between PSD &quot;</span>
                              <span class="s2">&quot;estimation segments.&quot;</span><span class="p">)</span>
     <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-low-freq&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;HERTZ&quot;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Minimum frequency to consider in PSD &quot;</span>
-                             <span class="s2">&quot;comparison.&quot;</span><span class="p">)</span>
+                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Minimum frequency to consider in strain &quot;</span>
+                             <span class="s2">&quot;bandpass.&quot;</span><span class="p">)</span>
     <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-high-freq&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;HERTZ&quot;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Maximum frequency to consider in PSD &quot;</span>
-                             <span class="s2">&quot;comparison.&quot;</span><span class="p">)</span>
+                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Maximum frequency to consider in strain &quot;</span>
+                             <span class="s2">&quot;bandpass.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">include_data_options</span> <span class="p">:</span>
         <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psd-estimation&quot;</span><span class="p">,</span>
@@ -507,24 +515,28 @@
                           <span class="n">help</span><span class="o">=</span><span class="s2">&quot;(Optional) Write PSD to specified file&quot;</span><span class="p">)</span>
 
     <span class="c1"># Options for PSD variation</span>
+    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-segment&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+                             <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Length of segment &quot;</span>
+                             <span class="s2">&quot;when calculating the PSD variability.&quot;</span><span class="p">)</span>
     <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-short-segment&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
                              <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Length of short segment &quot;</span>
-                             <span class="s2">&quot;when calculating the PSD variability.&quot;</span><span class="p">)</span>
+                             <span class="s2">&quot;for outliers removal in PSD variability &quot;</span>
+                             <span class="s2">&quot;calculation.&quot;</span><span class="p">)</span>
     <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-long-segment&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
                              <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Length of long segment &quot;</span>
                              <span class="s2">&quot;when calculating the PSD variability.&quot;</span><span class="p">)</span>
-    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-short-psd-duration&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-psd-duration&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
                              <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Duration of short &quot;</span>
                              <span class="s2">&quot;segments for PSD estimation.&quot;</span><span class="p">)</span>
-    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-short-psd-stride&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+    <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-psd-stride&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
                              <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;SECONDS&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Separation between PSD &quot;</span>
                              <span class="s2">&quot;estimation segments.&quot;</span><span class="p">)</span>
     <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-low-freq&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;HERTZ&quot;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Minimum frequency to consider in PSD &quot;</span>
-                             <span class="s2">&quot;comparison.&quot;</span><span class="p">)</span>
+                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Minimum frequency to consider in strain &quot;</span>
+                             <span class="s2">&quot;bandpass.&quot;</span><span class="p">)</span>
     <span class="n">psd_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--psdvar-high-freq&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;HERTZ&quot;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Maximum frequency to consider in PSD &quot;</span>
-                             <span class="s2">&quot;comparison.&quot;</span><span class="p">)</span>
+                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Maximum frequency to consider in strain &quot;</span>
+                             <span class="s2">&quot;bandpass.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">psd_options</span></div>
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.filter.matchedfilter &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>pycbc.filter.matchedfilter &mdash; PyCBC 0a06cd documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -1744,7 +1748,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">cout_mem</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex64</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ifts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">IFFT</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cout_mem</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_mem</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
                                 <span class="n">nbatch</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
-                                <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cout_mem</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">count</span><span class="p">)</span>
+                                <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cout_mem</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">//</span> <span class="n">count</span><span class="p">)</span>
 
         <span class="c1"># Split the templates into their processing groups</span>
         <span class="k">for</span> <span class="n">dur</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">mem_ids</span><span class="p">:</span>

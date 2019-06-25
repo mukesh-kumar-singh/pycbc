@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.events.eventmgr &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>pycbc.events.eventmgr &mdash; PyCBC 0a06cd documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -674,7 +678,7 @@
             <span class="k">if</span> <span class="s1">&#39;sg_chisq&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
                 <span class="n">f</span><span class="p">[</span><span class="s1">&#39;sg_chisq&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;sg_chisq&#39;</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="o">.</span><span class="n">psdvar_short_segment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="o">.</span><span class="n">psdvar_segment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">f</span><span class="p">[</span><span class="s1">&#39;psd_var_val&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;psd_var_val&#39;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="o">.</span><span class="n">trig_start_time</span><span class="p">:</span>
@@ -1196,7 +1200,7 @@
 
                 <span class="n">f</span><span class="p">[</span><span class="s1">&#39;template_hash&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">th</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="o">.</span><span class="n">psdvar_short_segment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="o">.</span><span class="n">psdvar_segment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">f</span><span class="p">[</span><span class="s1">&#39;psd_var_val&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ifo_events</span><span class="p">[</span><span class="s1">&#39;psd_var_val&#39;</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="o">.</span><span class="n">trig_start_time</span><span class="p">:</span>
