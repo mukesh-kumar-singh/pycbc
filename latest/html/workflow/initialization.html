@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pycbc’s workflow module configuration file(s) and command line interface &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>Pycbc’s workflow module configuration file(s) and command line interface &mdash; PyCBC 023b98 documentation</title>
   
 
   
@@ -62,6 +62,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -840,6 +844,19 @@ given in the [SECTION_NAME] section are not also given in any
 
 <dl class="method">
 <dt>
+<code class="descname">section_to_cli</code><span class="sig-paren">(</span><em>section</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycbc/workflow/configuration.html#WorkflowConfigParser.section_to_cli"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Converts a section into a command-line string.</p>
+<p>For example:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">section_name</span><span class="p">]</span>
+<span class="n">foo</span> <span class="o">=</span>
+<span class="n">bar</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>yields: <cite>‘–foo –bar 10’</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
 <code class="descname">split_multi_sections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycbc/workflow/configuration.html#WorkflowConfigParser.split_multi_sections"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Parse through the WorkflowConfigParser instance and splits any sections
 labelled with an “&amp;” sign (for e.g. [inspiral&amp;tmpltbank]) into
@@ -927,7 +944,7 @@ that file.</p>
     <p>
         &copy; Copyright 2015, 2016, 2017, Alexander Nitz, Ian Harry, Christopher M. Biwer, Duncan A.  Brown, Josh Willis, and Tito Dal Canton
       <span class="lastupdated">
-        Last updated on Jun 25, 2019.
+        Last updated on Jun 26, 2019.
       </span>
 
     </p>
