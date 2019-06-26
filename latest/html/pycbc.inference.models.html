@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.inference.models package &mdash; PyCBC 1.14.dev1 documentation</title>
+  <title>pycbc.inference.models package &mdash; PyCBC 9aff2d documentation</title>
   
 
   
@@ -62,6 +62,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.0
+              </div>
             
           
 
@@ -1069,38 +1073,43 @@ called.</p>
 <p>This module provides model classes that assume the noise is Gaussian.</p>
 <dl class="class">
 <dt id="pycbc.inference.models.gaussian_noise.GaussianNoise">
-<em class="property">class </em><code class="descclassname">pycbc.inference.models.gaussian_noise.</code><code class="descname">GaussianNoise</code><span class="sig-paren">(</span><em>variable_params</em>, <em>data</em>, <em>low_frequency_cutoff</em>, <em>psds=None</em>, <em>high_frequency_cutoff=None</em>, <em>norm=None</em>, <em>static_params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/models/gaussian_noise.html#GaussianNoise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.models.gaussian_noise.GaussianNoise" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pycbc.inference.models.gaussian_noise.</code><code class="descname">GaussianNoise</code><span class="sig-paren">(</span><em>variable_params</em>, <em>data</em>, <em>low_frequency_cutoff</em>, <em>psds=None</em>, <em>high_frequency_cutoff=None</em>, <em>static_params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/models/gaussian_noise.html#GaussianNoise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.models.gaussian_noise.GaussianNoise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pycbc.inference.models.base_data.BaseDataModel" title="pycbc.inference.models.base_data.BaseDataModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycbc.inference.models.base_data.BaseDataModel</span></code></a></p>
 <p>Model that assumes data is stationary Gaussian noise.</p>
 <p>With Gaussian noise the log likelihood functions for signal
-<span class="math notranslate nohighlight">\(\log p(d|\Theta)\)</span> and for noise <span class="math notranslate nohighlight">\(\log p(d|n)\)</span> are given by:</p>
+<span class="math notranslate nohighlight">\(\log p(d|\Theta, h)\)</span> and for noise <span class="math notranslate nohighlight">\(\log p(d|n)\)</span> are given by:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\log p(d|\Theta) &amp;=  -\frac{1}{2} \sum_i
-    \left&lt; h_i(\Theta) - d_i | h_i(\Theta) - d_i \right&gt; \\
-\log p(d|n) &amp;= -\frac{1}{2} \sum_i \left&lt;d_i | d_i\right&gt;\end{split}\]</div>
+\[\begin{split}\log p(d|\Theta, h) &amp;=  \log\alpha -\frac{1}{2} \sum_i
+    \left&lt; d_i - h_i(\Theta) | d_i - h_i(\Theta) \right&gt; \\
+\log p(d|n) &amp;= -\log\alpha -\frac{1}{2} \sum_i \left&lt;d_i | d_i\right&gt;\end{split}\]</div>
 <p>where the sum is over the number of detectors, <span class="math notranslate nohighlight">\(d_i\)</span> is the data in
 each detector, and <span class="math notranslate nohighlight">\(h_i(\Theta)\)</span> is the model signal in each
-detector. The inner product is given by:</p>
+detector. The (discrete) inner product is given by:</p>
 <div class="math notranslate nohighlight">
-\[\left&lt;a | b\right&gt; = 4\Re \int_{0}^{\infty}
-    \frac{\tilde{a}(f) \tilde{b}(f)}{S_n(f)} \mathrm{d}f,\]</div>
-<p>where <span class="math notranslate nohighlight">\(S_n(f)\)</span> is the PSD in the given detector.</p>
-<p>Note that the log prior-weighted likelihood ratio has one fewer term
-than the log posterior, since the <span class="math notranslate nohighlight">\(\left&lt;d_i|d_i\right&gt;\)</span> term cancels
-in the likelihood ratio:</p>
+\[\left&lt;a_i | b_i\right&gt; = 4\Re \delta f
+    \sum_{k=k_{\mathrm{min}}}^{k_{\mathrm{max}}}
+    \frac{\tilde{a}_i^{*}[k] \tilde{b}_i[k]}{S^(i)_n[k]},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta f\)</span> is the frequency resolution (given by 1 / the
+observation time <span class="math notranslate nohighlight">\(T\)</span>), <span class="math notranslate nohighlight">\(k\)</span> is an index over the discretely
+sampled frequencies <span class="math notranslate nohighlight">\(f = k \delta_f\)</span>, and <span class="math notranslate nohighlight">\(S^(i)_n[k]\)</span> is the
+PSD in the given detector. The upper cutoff on the inner product
+<span class="math notranslate nohighlight">\(k_{\mathrm{max}}\)</span> is by default the Nyquist frequency
+<cite>k_{mathrm{max}} = N/2+1</cite>, where <span class="math notranslate nohighlight">\(N = \lfloor T/\delta t \rfloor\)</span>
+is the number of samples in the time domain, but this can be set manually
+to a smaller value.</p>
+<p>The normalization factor <span class="math notranslate nohighlight">\(\alpha\)</span> is:</p>
 <div class="math notranslate nohighlight">
-\[\log \hat{\mathcal{L}} = \log p(\Theta) + \sum_i \left[
+\[\alpha = \frac{1}{\left(\pi T\right)^{N/2}
+    \prod_{k=k_\mathrm{min}}^{k_{\mathrm{max}}} S_n[k]}.\]</div>
+<p>Note that the log likelihood ratio has fewer terms than the log likelihood,
+since the normalization and <span class="math notranslate nohighlight">\(\left&lt;d_i|d_i\right&gt;\)</span> terms cancel:</p>
+<div class="math notranslate nohighlight">
+\[\log \mathcal{L}(\Theta) = \sum_i \left[
     \left&lt;h_i(\Theta)|d_i\right&gt; -
     \frac{1}{2} \left&lt;h_i(\Theta)|h_i(\Theta)\right&gt; \right]\]</div>
 <p>Upon initialization, the data is whitened using the given PSDs. If no PSDs
 are given the data and waveforms returned by the waveform generator are
-assumed to be whitened. The likelihood function of the noise,</p>
-<div class="math notranslate nohighlight">
-\[p(d|n) = \frac{1}{2} \sum_i \left&lt;d_i|d_i\right&gt;,\]</div>
-<p>is computed on initialization and stored as the <cite>lognl</cite> attribute.</p>
-<p>By default, the data is assumed to be equally sampled in frequency, but
-unequally sampled data can be supported by passing the appropriate
-normalization using the <code class="docutils literal notranslate"><span class="pre">norm</span></code> keyword argument.</p>
+assumed to be whitened.</p>
 <p>For more details on initialization parameters and definition of terms, see
 <code class="xref py py-class docutils literal notranslate"><span class="pre">models.BaseDataModel</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1125,9 +1134,6 @@ detector names and the values are the ending frequencies for the
 respective detectors to be used for computing inner products. If not
 provided, the minimum of the largest frequency stored in the data
 and a given waveform will be used.</li>
-<li><strong>norm</strong> (<em>{None</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>array}</em>) – An extra normalization weight to apply to the inner products. Can be
-either a float or an array. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">4*data.values()[0].delta_f</span></code>
-will be used.</li>
 <li><strong>static_params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>optional</em>) – A dictionary of parameter names -&gt; values to keep fixed.</li>
 <li><strong>**kwargs</strong> – All other keyword arguments are passed to <code class="docutils literal notranslate"><span class="pre">BaseDataModel</span></code>.</li>
 </ul>
@@ -1161,38 +1167,38 @@ will be used.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">low_frequency_cutoff</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;H1&#39;</span><span class="p">:</span> <span class="n">fmin</span><span class="p">,</span> <span class="s1">&#39;L1&#39;</span><span class="p">:</span> <span class="n">fmin</span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">GaussianNoise</span><span class="p">(</span><span class="n">variable_params</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">low_frequency_cutoff</span><span class="p">,</span>
 <span class="go">                          psds=psds, static_params=static_params)</span>
-<span class="go">Set the current position to the coalescence time of the signal:</span>
 </pre></div>
 </div>
+<p>Set the current position to the coalescence time of the signal:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tc</span><span class="o">=</span><span class="n">tsig</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now compute the log likelihood ratio and prior-weighted likelihood ratio;
 since we have not provided a prior, these should be equal to each other:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">loglr</span><span class="p">))</span>
-<span class="go">282.29</span>
+<span class="go">282.43</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">logplr</span><span class="p">))</span>
-<span class="go">282.29</span>
+<span class="go">282.43</span>
 </pre></div>
 </div>
 <p>Print all of the default_stats:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 <span class="gp">... </span>                  <span class="k">for</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">current_stats</span><span class="o">.</span><span class="n">items</span><span class="p">())]))</span>
-<span class="go">H1_cplx_loglr: 177.66+0.00j,</span>
-<span class="go">H1_optimal_snrsq: 355.33,</span>
-<span class="go">L1_cplx_loglr: 104.63+0.00j,</span>
-<span class="go">L1_optimal_snrsq: 209.26,</span>
-<span class="go">logjacobian: 0.00,</span>
-<span class="go">loglikelihood: 0.00,</span>
-<span class="go">loglr: 282.29,</span>
-<span class="go">logprior: 0.00</span>
+<span class="go">H1_cplx_loglr: 177.76+0.00j,</span>
+<span class="go">H1_optimal_snrsq: 355.52,</span>
+<span class="go">L1_cplx_loglr: 104.67+0.00j,</span>
+<span class="go">L1_optimal_snrsq: 209.35,</span>
+<span class="go">logjacobian: nan,</span>
+<span class="go">loglikelihood: 835680.31,</span>
+<span class="go">loglr: 282.43,</span>
+<span class="go">logprior: nan</span>
 </pre></div>
 </div>
 <p>Compute the SNR; for this system and PSD, this should be approximately 24:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pycbc.conversions</span> <span class="k">import</span> <span class="n">snr_from_loglr</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">snr_from_loglr</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">loglr</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-<span class="go">23.76</span>
+<span class="go">23.77</span>
 </pre></div>
 </div>
 <p>Since there is no noise, the SNR should be the same as the quadrature sum
@@ -1200,7 +1206,7 @@ of the optimal SNRs in each detector:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">det_optimal_snrsq</span><span class="p">(</span><span class="s1">&#39;H1&#39;</span><span class="p">)</span> <span class="o">+</span>
 <span class="gp">... </span>     <span class="n">model</span><span class="o">.</span><span class="n">det_optimal_snrsq</span><span class="p">(</span><span class="s1">&#39;L1&#39;</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-<span class="go">23.76</span>
+<span class="go">23.77</span>
 </pre></div>
 </div>
 <p>Using the same model, evaluate the log likelihood ratio at several points
@@ -1221,19 +1227,20 @@ in time and check that the max is at tsig:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">uniform_prior</span> <span class="o">=</span> <span class="n">distributions</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="n">tc</span><span class="o">=</span><span class="p">(</span><span class="n">tsig</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span><span class="n">tsig</span><span class="o">+</span><span class="mf">0.2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">prior</span> <span class="o">=</span> <span class="n">distributions</span><span class="o">.</span><span class="n">JointDistribution</span><span class="p">(</span><span class="n">variable_params</span><span class="p">,</span> <span class="n">uniform_prior</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pycbc</span><span class="o">.</span><span class="n">inference</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">GaussianNoise</span><span class="p">(</span><span class="n">variable_params</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">signal</span><span class="p">,</span> <span class="n">generator</span><span class="p">,</span> <span class="n">low_frequency_cutoff</span><span class="p">,</span> <span class="n">psds</span><span class="o">=</span><span class="n">psds</span><span class="p">,</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">signal</span><span class="p">,</span> <span class="n">low_frequency_cutoff</span><span class="p">,</span> <span class="n">psds</span><span class="o">=</span><span class="n">psds</span><span class="p">,</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">static_params</span><span class="o">=</span><span class="n">static_params</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tc</span><span class="o">=</span><span class="n">tsig</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">logplr</span><span class="p">))</span>
-<span class="go">283.21</span>
+<span class="go">283.35</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 <span class="gp">... </span>                  <span class="k">for</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">current_stats</span><span class="o">.</span><span class="n">items</span><span class="p">())]))</span>
-<span class="go">H1_cplx_loglr: 177.66+0.00j,</span>
-<span class="go">H1_optimal_snrsq: 355.33,</span>
-<span class="go">L1_cplx_loglr: 104.63+0.00j,</span>
-<span class="go">L1_optimal_snrsq: 209.26,</span>
+<span class="go">H1_cplx_loglr: 177.76+0.00j,</span>
+<span class="go">H1_optimal_snrsq: 355.52,</span>
+<span class="go">L1_cplx_loglr: 104.67+0.00j,</span>
+<span class="go">L1_optimal_snrsq: 209.35,</span>
 <span class="go">logjacobian: 0.00,</span>
-<span class="go">loglikelihood: 0.00,</span>
-<span class="go">loglr: 282.29,</span>
+<span class="go">loglikelihood: 835680.31,</span>
+<span class="go">loglr: 282.43,</span>
 <span class="go">logprior: 0.92</span>
 </pre></div>
 </div>
@@ -1258,7 +1265,10 @@ in time and check that the max is at tsig:</p>
 <dl class="method">
 <dt id="pycbc.inference.models.gaussian_noise.GaussianNoise.det_lognl">
 <code class="descname">det_lognl</code><span class="sig-paren">(</span><em>det</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/models/gaussian_noise.html#GaussianNoise.det_lognl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.models.gaussian_noise.GaussianNoise.det_lognl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the log likelihood of the noise in the given detector.</p>
+<dd><p>Returns the log likelihood of the noise in the given detector:</p>
+<div class="math notranslate nohighlight">
+\[\log p(d_i|n_i) = \log \alpha_i -
+    \frac{1}{2} \left&lt;d_i | d_i\right&gt;.\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1271,6 +1281,12 @@ in time and check that the max is at tsig:</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycbc.inference.models.gaussian_noise.GaussianNoise.det_lognorm">
+<code class="descname">det_lognorm</code><span class="sig-paren">(</span><em>det</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/models/gaussian_noise.html#GaussianNoise.det_lognorm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.models.gaussian_noise.GaussianNoise.det_lognorm" title="Permalink to this definition">¶</a></dt>
+<dd><p>The log of the likelihood normalization in the given detector.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1317,6 +1333,12 @@ provided keyword will over ride what is in the config file.</li>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pycbc.inference.models.gaussian_noise.GaussianNoise.lognorm">
+<code class="descname">lognorm</code><a class="headerlink" href="#pycbc.inference.models.gaussian_noise.GaussianNoise.lognorm" title="Permalink to this definition">¶</a></dt>
+<dd><p>The log of the normalization of the log likelihood.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pycbc.inference.models.gaussian_noise.GaussianNoise.low_frequency_cutoff">
 <code class="descname">low_frequency_cutoff</code><a class="headerlink" href="#pycbc.inference.models.gaussian_noise.GaussianNoise.low_frequency_cutoff" title="Permalink to this definition">¶</a></dt>
 <dd><p>The low frequency cutoff of the inner product.</p>
@@ -1326,6 +1348,12 @@ provided keyword will over ride what is in the config file.</li>
 <dt id="pycbc.inference.models.gaussian_noise.GaussianNoise.name">
 <code class="descname">name</code><em class="property"> = 'gaussian_noise'</em><a class="headerlink" href="#pycbc.inference.models.gaussian_noise.GaussianNoise.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pycbc.inference.models.gaussian_noise.GaussianNoise.psds">
+<code class="descname">psds</code><a class="headerlink" href="#pycbc.inference.models.gaussian_noise.GaussianNoise.psds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the psds that are set.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pycbc.inference.models.gaussian_noise.GaussianNoise.waveform_generator">
@@ -1610,7 +1638,7 @@ provided keyword will over ride what is in the config file.</li>
 
 <dl class="class">
 <dt id="pycbc.inference.models.marginalized_gaussian_noise.MarginalizedPhaseGaussianNoise">
-<em class="property">class </em><code class="descclassname">pycbc.inference.models.marginalized_gaussian_noise.</code><code class="descname">MarginalizedPhaseGaussianNoise</code><span class="sig-paren">(</span><em>variable_params</em>, <em>data</em>, <em>low_frequency_cutoff</em>, <em>psds=None</em>, <em>high_frequency_cutoff=None</em>, <em>norm=None</em>, <em>static_params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/models/marginalized_gaussian_noise.html#MarginalizedPhaseGaussianNoise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.models.marginalized_gaussian_noise.MarginalizedPhaseGaussianNoise" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pycbc.inference.models.marginalized_gaussian_noise.</code><code class="descname">MarginalizedPhaseGaussianNoise</code><span class="sig-paren">(</span><em>variable_params</em>, <em>data</em>, <em>low_frequency_cutoff</em>, <em>psds=None</em>, <em>high_frequency_cutoff=None</em>, <em>static_params=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/inference/models/marginalized_gaussian_noise.html#MarginalizedPhaseGaussianNoise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.inference.models.marginalized_gaussian_noise.MarginalizedPhaseGaussianNoise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pycbc.inference.models.gaussian_noise.GaussianNoise" title="pycbc.inference.models.gaussian_noise.GaussianNoise"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycbc.inference.models.gaussian_noise.GaussianNoise</span></code></a></p>
 <p>The likelihood is analytically marginalized over phase.</p>
 <p>This class can be used with signal models that can be written as:</p>
