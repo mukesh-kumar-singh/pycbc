@@ -1628,12 +1628,16 @@
         <span class="n">server</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;workflow-segments&quot;</span><span class="p">,</span>
                                  <span class="s2">&quot;segments-database-url&quot;</span><span class="p">)</span>
 
+    <span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;any&quot;</span>
+    <span class="k">if</span> <span class="n">cp</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s2">&quot;workflow-segments&quot;</span><span class="p">,</span> <span class="s2">&quot;segments-source&quot;</span><span class="p">):</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;workflow-segments&quot;</span><span class="p">,</span> <span class="s2">&quot;segments-source&quot;</span><span class="p">)</span>
+
     <span class="n">segs</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">ifo</span> <span class="ow">in</span> <span class="n">workflow</span><span class="o">.</span><span class="n">ifos</span><span class="p">:</span>
         <span class="n">flag_str</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">get_opt_tags</span><span class="p">(</span><span class="s2">&quot;workflow-segments&quot;</span><span class="p">,</span> <span class="n">option_name</span><span class="p">,</span> <span class="p">[</span><span class="n">ifo</span><span class="p">])</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">ifo</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">name</span>
         <span class="n">segs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">query_str</span><span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">flag_str</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span>
-                              <span class="n">server</span><span class="o">=</span><span class="n">server</span><span class="p">,</span>
+                              <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">server</span><span class="o">=</span><span class="n">server</span><span class="p">,</span>
                               <span class="n">veto_definer</span><span class="o">=</span><span class="n">veto_definer</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: got </span><span class="si">%s</span><span class="s2"> flags&quot;</span><span class="p">,</span> <span class="n">ifo</span><span class="p">,</span> <span class="n">option_name</span><span class="p">)</span>
 

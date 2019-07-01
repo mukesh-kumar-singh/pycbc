@@ -404,7 +404,13 @@
                     <span class="n">partial</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="p">(</span><span class="n">seg_start</span><span class="p">,</span> <span class="n">seg_end</span><span class="p">))</span>
 
                 <span class="c1"># Limit to the veto definer stated valid region of this flag</span>
-                <span class="n">send</span> <span class="o">=</span> <span class="n">segmentlist</span><span class="p">([</span><span class="n">segment</span><span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">],</span> <span class="n">flag</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">])])</span>
+                <span class="n">flag_start</span> <span class="o">=</span> <span class="n">flag</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span>
+                <span class="n">flag_end</span> <span class="o">=</span> <span class="n">flag</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span>
+                <span class="c1"># Corner case: if the flag end time is 0 it means &#39;no limit&#39;</span>
+                <span class="c1"># so use the query end time</span>
+                <span class="k">if</span> <span class="n">flag_end</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">flag_end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">end_time</span><span class="p">)</span>
+                <span class="n">send</span> <span class="o">=</span> <span class="n">segmentlist</span><span class="p">([</span><span class="n">segment</span><span class="p">(</span><span class="n">flag_start</span><span class="p">,</span> <span class="n">flag_end</span><span class="p">)])</span>
                 <span class="n">flag_segments</span> <span class="o">+=</span> <span class="p">(</span><span class="n">partial</span><span class="o">.</span><span class="n">coalesce</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">send</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Standard case just query directly</span>
@@ -576,8 +582,8 @@
     <span class="k">return</span> <span class="n">bflags</span><span class="p">,</span> <span class="n">signs</span><span class="p">,</span> <span class="n">ifos</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">padding</span></div>
 
 
-<div class="viewcode-block" id="query_str"><a class="viewcode-back" href="../../pycbc.html#pycbc.dq.query_str">[docs]</a><span class="k">def</span> <span class="nf">query_str</span><span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">flag_str</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">server</span><span class="o">=</span><span class="s2">&quot;segments.ligo.org&quot;</span><span class="p">,</span>
-              <span class="n">veto_definer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="query_str"><a class="viewcode-back" href="../../pycbc.html#pycbc.dq.query_str">[docs]</a><span class="k">def</span> <span class="nf">query_str</span><span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">flag_str</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">,</span>
+              <span class="n">server</span><span class="o">=</span><span class="s2">&quot;segments.ligo.org&quot;</span><span class="p">,</span> <span class="n">veto_definer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Query for flags based on a special str syntax</span>
 
 <span class="sd">    Parameters</span>
@@ -595,6 +601,14 @@
 <span class="sd">    end_time: int</span>
 <span class="sd">        The end gps time. May be overridden for individual flags with the</span>
 <span class="sd">        flag str bounds syntax</span>
+<span class="sd">    source: str, Optional</span>
+<span class="sd">        Choice between &quot;GWOSC&quot; or &quot;dqsegdb&quot;. If dqsegdb, the server option may</span>
+<span class="sd">        also be given. The default is to try GWOSC first then try dqsegdb.</span>
+<span class="sd">    server: str, Optional</span>
+<span class="sd">        The server path. Only used with dqsegdb atm.</span>
+<span class="sd">    veto_definer: str, Optional</span>
+<span class="sd">        The path to a veto definer to define groups of flags which</span>
+<span class="sd">        themselves define a set of segments.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -608,6 +622,7 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">up</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">down</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">flags</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not all flags could be parsed, check +/- prefix&#39;</span><span class="p">)</span>
     <span class="n">segs</span> <span class="o">=</span> <span class="n">query_cumulative_flags</span><span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span>
+                                  <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
                                   <span class="n">server</span><span class="o">=</span><span class="n">server</span><span class="p">,</span>
                                   <span class="n">veto_definer</span><span class="o">=</span><span class="n">veto_definer</span><span class="p">,</span>
                                   <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">,</span>
@@ -615,6 +630,7 @@
                                   <span class="n">override_ifos</span><span class="o">=</span><span class="n">ifos</span><span class="p">)</span>
 
     <span class="n">mseg</span> <span class="o">=</span> <span class="n">query_cumulative_flags</span><span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">down</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span>
+                                  <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
                                   <span class="n">server</span><span class="o">=</span><span class="n">server</span><span class="p">,</span>
                                   <span class="n">veto_definer</span><span class="o">=</span><span class="n">veto_definer</span><span class="p">,</span>
                                   <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">,</span>

@@ -2643,7 +2643,7 @@ themselves define a set of segments.</li>
 
 <dl class="function">
 <dt id="pycbc.dq.query_str">
-<code class="descclassname">pycbc.dq.</code><code class="descname">query_str</code><span class="sig-paren">(</span><em>ifo</em>, <em>flag_str</em>, <em>start_time</em>, <em>end_time</em>, <em>server='segments.ligo.org'</em>, <em>veto_definer=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/dq.html#query_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.dq.query_str" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pycbc.dq.</code><code class="descname">query_str</code><span class="sig-paren">(</span><em>ifo</em>, <em>flag_str</em>, <em>start_time</em>, <em>end_time</em>, <em>source='any'</em>, <em>server='segments.ligo.org'</em>, <em>veto_definer=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/dq.html#query_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.dq.query_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query for flags based on a special str syntax</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2659,6 +2659,11 @@ the chosen range 0,1000000000.</li>
 flag str bounds syntax</li>
 <li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The end gps time. May be overridden for individual flags with the
 flag str bounds syntax</li>
+<li><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Optional</em>) – Choice between “GWOSC” or “dqsegdb”. If dqsegdb, the server option may
+also be given. The default is to try GWOSC first then try dqsegdb.</li>
+<li><strong>server</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Optional</em>) – The server path. Only used with dqsegdb atm.</li>
+<li><strong>veto_definer</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Optional</em>) – The path to a veto definer to define groups of flags which
+themselves define a set of segments.</li>
 </ul>
 </td>
 </tr>
