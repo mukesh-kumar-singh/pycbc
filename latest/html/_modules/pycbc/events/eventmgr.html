@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.events.eventmgr &mdash; PyCBC 1.14.1 documentation</title>
+  <title>pycbc.events.eventmgr &mdash; PyCBC 87e64c documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.1
+              </div>
             
           
 
@@ -790,6 +794,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">event_index</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">template_event_dict</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">]</span> <span class="o">=</span> \
                                 <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_event_dtype</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EventManagerCoherent.cluster_template_network_events"><a class="viewcode-back" href="../../../pycbc.events.html#pycbc.events.eventmgr.EventManagerCoherent.cluster_template_network_events">[docs]</a>    <span class="k">def</span> <span class="nf">cluster_template_network_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tcolumn</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">window_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Cluster the internal events over the named column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cvec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_event_dict</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">][</span><span class="n">column</span><span class="p">]</span>
+        <span class="n">tvec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_event_dict</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">][</span><span class="n">tcolumn</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">window_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tvec</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">findchirp_cluster_over_window</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">cvec</span><span class="p">,</span> <span class="n">window_size</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_event_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">template_event_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">template_event_dict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">indices</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="EventManagerCoherent.add_template_network_events"><a class="viewcode-back" href="../../../pycbc.events.html#pycbc.events.eventmgr.EventManagerCoherent.add_template_network_events">[docs]</a>    <span class="k">def</span> <span class="nf">add_template_network_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add a vector indexed &quot;&quot;&quot;</span>
