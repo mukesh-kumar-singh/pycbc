@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.events.stat &mdash; PyCBC 3d57f0 documentation</title>
+  <title>pycbc.events.stat &mdash; PyCBC 1.14.dev2 documentation</title>
   
 
   
@@ -60,10 +60,6 @@
 
           
             
-            
-              <div class="version">
-                1.14.1
-              </div>
             
           
 
@@ -804,8 +800,8 @@
 <div class="viewcode-block" id="ExpFitSGCoincRateStatistic.coinc_multiifo"><a class="viewcode-back" href="../../../pycbc.events.html#pycbc.events.stat.ExpFitSGCoincRateStatistic.coinc_multiifo">[docs]</a>    <span class="k">def</span> <span class="nf">coinc_multiifo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span>
                        <span class="n">step</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c1"># pylint:disable=unused-argument</span>
         <span class="sd">&quot;&quot;&quot;Calculate the final coinc ranking statistic&quot;&quot;&quot;</span>
-        <span class="n">sngl_rates_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">ifo</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">sngl_rate</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">sngl_rate</span><span class="p">)</span> <span class="ow">in</span>\
-                           <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fits_by_tid</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">s</span><span class="o">.</span><span class="n">values</span><span class="p">())}</span>
+        <span class="n">sngl_rates_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">ifo</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_rate</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">log_rate</span><span class="p">)</span>\
+                           <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="n">ln_coinc_rate</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">coinc_rate</span><span class="o">.</span><span class="n">combination_noise_coinc_rate</span><span class="p">(</span>
                                   <span class="n">sngl_rates_dict</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;time_addition&#39;</span><span class="p">]))</span>
         <span class="n">loglr</span> <span class="o">=</span> <span class="o">-</span> <span class="n">ln_coinc_rate</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">benchmark_lograte</span>
