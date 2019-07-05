@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.events package &mdash; PyCBC 1.14.dev2 documentation</title>
+  <title>pycbc.events package &mdash; PyCBC 730049 documentation</title>
   
 
   
@@ -62,6 +62,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.1
+              </div>
             
           
 
@@ -260,7 +264,7 @@
 coincident triggers.</p>
 <dl class="class">
 <dt id="pycbc.events.coinc.CoincExpireBuffer">
-<em class="property">class </em><code class="descclassname">pycbc.events.coinc.</code><code class="descname">CoincExpireBuffer</code><span class="sig-paren">(</span><em>expiration</em>, <em>ifos</em>, <em>initial_size=1048576</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/coinc.html#CoincExpireBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.coinc.CoincExpireBuffer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pycbc.events.coinc.</code><code class="descname">CoincExpireBuffer</code><span class="sig-paren">(</span><em>expiration</em>, <em>ifos</em>, <em>initial_size=1048576</em>, <em>dtype=&lt;type 'numpy.float32'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/coinc.html#CoincExpireBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.coinc.CoincExpireBuffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Unordered dynamic sized buffer that handles
 multiple expiration vectors.</p>
@@ -747,24 +751,23 @@ is slid to the right by the offset in the given timeslide_offsets vector.</p>
 <p>This module contains functions for calculating expected rates of noise
 and signal coincidences.</p>
 <dl class="function">
-<dt id="pycbc.events.coinc_rate.combination_noise_coinc_rate">
-<code class="descclassname">pycbc.events.coinc_rate.</code><code class="descname">combination_noise_coinc_rate</code><span class="sig-paren">(</span><em>rates</em>, <em>slop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/coinc_rate.html#combination_noise_coinc_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.coinc_rate.combination_noise_coinc_rate" title="Permalink to this definition">¶</a></dt>
+<dt id="pycbc.events.coinc_rate.combination_noise_coinc_lograte">
+<code class="descclassname">pycbc.events.coinc_rate.</code><code class="descname">combination_noise_coinc_lograte</code><span class="sig-paren">(</span><em>log_rates</em>, <em>slop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/coinc_rate.html#combination_noise_coinc_lograte"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.coinc_rate.combination_noise_coinc_lograte" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the expected rate of noise coincidences for a combination of
-detectors</p>
+detectors given log of single detector noise rates</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Dictionary keyed on ifo string
-Value is a sequence of single-detector trigger rates, units assumed
-to be Hz</li>
+<li><strong>log_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Key: ifo string, Value: sequence of log single-detector trigger rates,
+units assumed to be Hz</li>
 <li><strong>slop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – time added to maximum time-of-flight between detectors to account
 for timing error</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>combo_coinc_rate</strong> – Value is expected coincidence rate in the combination, units Hz</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>combo_coinc_rate</strong> – Expected log coincidence rate in the combination, units Hz</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
@@ -775,8 +778,36 @@ for timing error</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="pycbc.events.coinc_rate.multiifo_noise_coinc_rate">
-<code class="descclassname">pycbc.events.coinc_rate.</code><code class="descname">multiifo_noise_coinc_rate</code><span class="sig-paren">(</span><em>rates</em>, <em>slop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/coinc_rate.html#multiifo_noise_coinc_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.coinc_rate.multiifo_noise_coinc_rate" title="Permalink to this definition">¶</a></dt>
+<dt id="pycbc.events.coinc_rate.combination_noise_coinc_rate">
+<code class="descclassname">pycbc.events.coinc_rate.</code><code class="descname">combination_noise_coinc_rate</code><span class="sig-paren">(</span><em>rates</em>, <em>slop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/coinc_rate.html#combination_noise_coinc_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.coinc_rate.combination_noise_coinc_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the expected rate of noise coincidences for a combination of
+detectors
+WARNING: for high stat values, numerical underflow can occur</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Key: ifo string, Value: sequence of single-detector trigger rates,
+units assumed to be Hz</li>
+<li><strong>slop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – time added to maximum time-of-flight between detectors to account
+for timing error</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>combo_coinc_rate</strong> – Expected coincidence rate in the combination, units Hz</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycbc.events.coinc_rate.multiifo_noise_coinc_lograte">
+<code class="descclassname">pycbc.events.coinc_rate.</code><code class="descname">multiifo_noise_coinc_lograte</code><span class="sig-paren">(</span><em>log_rates</em>, <em>slop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/coinc_rate.html#multiifo_noise_coinc_lograte"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.coinc_rate.multiifo_noise_coinc_lograte" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the expected rate of noise coincidences for multiple
 combinations of detectors</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -784,16 +815,15 @@ combinations of detectors</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Dictionary keyed on ifo string
-Value is a sequence of single-detector trigger rates, units assumed
-to be Hz</li>
+<li><strong>log_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Key: ifo string, Value: sequence of log single-detector trigger rates,
+units assumed to be Hz</li>
 <li><strong>slop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – time added to maximum time-of-flight between detectors to account
 for timing error</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>expected_coinc_rates</strong> – Dictionary keyed on the ifo combination string
-Value is expected coincidence rate in the combination, units Hz</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>expected_coinc_log_rates</strong> – Key: ifo combination string
+Value: expected log coincidence rate in the combination, units log Hz</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
@@ -806,9 +836,10 @@ Value is expected coincidence rate in the combination, units Hz</p>
 <dl class="function">
 <dt id="pycbc.events.coinc_rate.multiifo_noise_coincident_area">
 <code class="descclassname">pycbc.events.coinc_rate.</code><code class="descname">multiifo_noise_coincident_area</code><span class="sig-paren">(</span><em>ifos</em>, <em>slop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/coinc_rate.html#multiifo_noise_coincident_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.coinc_rate.multiifo_noise_coincident_area" title="Permalink to this definition">¶</a></dt>
-<dd><p>calculate the total extent of time offset between 2 detectors,
+<dd><p>Calculate the total extent of time offset between 2 detectors,
 or area of the 2d space of time offsets for 3 detectors, for
-which a coincidence can be generated</p>
+which a coincidence can be generated
+Cannot yet handle more than 3 detectors.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1219,7 +1250,7 @@ variation statistic</p>
 
 <dl class="class">
 <dt id="pycbc.events.simd_threshold.ThreshClusterObject">
-<em class="property">class </em><code class="descclassname">pycbc.events.simd_threshold.</code><code class="descname">ThreshClusterObject</code><span class="sig-paren">(</span><em>series</em>, <em>window</em>, <em>segsize=32768.0</em>, <em>verbose=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/simd_threshold.html#ThreshClusterObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.simd_threshold.ThreshClusterObject" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pycbc.events.simd_threshold.</code><code class="descname">ThreshClusterObject</code><span class="sig-paren">(</span><em>series</em>, <em>window</em>, <em>segsize=32768</em>, <em>verbose=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycbc/events/simd_threshold.html#ThreshClusterObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycbc.events.simd_threshold.ThreshClusterObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>This class takes a complex SNR time series, a real threshold value, and a window size
 (expressed as a number of complex sample points), and optionally a segment size and
@@ -2448,7 +2479,7 @@ contain a segment table</li>
     <p>
         &copy; Copyright 2015, 2016, 2017, Alexander Nitz, Ian Harry, Christopher M. Biwer, Duncan A.  Brown, Josh Willis, and Tito Dal Canton
       <span class="lastupdated">
-        Last updated on Jul 03, 2019.
+        Last updated on Jul 05, 2019.
       </span>
 
     </p>

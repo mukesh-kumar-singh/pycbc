@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.events.coinc_rate &mdash; PyCBC 1.14.dev2 documentation</title>
+  <title>pycbc.events.coinc_rate &mdash; PyCBC 730049 documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.1
+              </div>
             
           
 
@@ -210,39 +214,40 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">pycbc.detector</span>
 
 
-<div class="viewcode-block" id="multiifo_noise_coinc_rate"><a class="viewcode-back" href="../../../pycbc.events.html#pycbc.events.coinc_rate.multiifo_noise_coinc_rate">[docs]</a><span class="k">def</span> <span class="nf">multiifo_noise_coinc_rate</span><span class="p">(</span><span class="n">rates</span><span class="p">,</span> <span class="n">slop</span><span class="p">):</span>
+<div class="viewcode-block" id="multiifo_noise_coinc_lograte"><a class="viewcode-back" href="../../../pycbc.events.html#pycbc.events.coinc_rate.multiifo_noise_coinc_lograte">[docs]</a><span class="k">def</span> <span class="nf">multiifo_noise_coinc_lograte</span><span class="p">(</span><span class="n">log_rates</span><span class="p">,</span> <span class="n">slop</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the expected rate of noise coincidences for multiple</span>
 <span class="sd">    combinations of detectors</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    rates: dict</span>
-<span class="sd">        Dictionary keyed on ifo string</span>
-<span class="sd">        Value is a sequence of single-detector trigger rates, units assumed</span>
-<span class="sd">        to be Hz</span>
+<span class="sd">    log_rates: dict</span>
+<span class="sd">        Key: ifo string, Value: sequence of log single-detector trigger rates,</span>
+<span class="sd">        units assumed to be Hz</span>
 <span class="sd">    slop: float</span>
 <span class="sd">        time added to maximum time-of-flight between detectors to account</span>
 <span class="sd">        for timing error</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    expected_coinc_rates: dict</span>
-<span class="sd">        Dictionary keyed on the ifo combination string</span>
-<span class="sd">        Value is expected coincidence rate in the combination, units Hz</span>
+<span class="sd">    expected_coinc_log_rates: dict</span>
+<span class="sd">        Key: ifo combination string</span>
+<span class="sd">        Value: expected log coincidence rate in the combination, units log Hz</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">expected_coinc_rates</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">expected_coinc_log_rates</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># Order of ifos must be stable in output dict keys, so sort them</span>
-    <span class="n">ifos</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">rates</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="n">ifos</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">log_rates</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
     <span class="n">ifostring</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ifos</span><span class="p">)</span>
 
     <span class="c1"># Calculate coincidence for all-ifo combination</span>
-    <span class="n">expected_coinc_rates</span><span class="p">[</span><span class="n">ifostring</span><span class="p">]</span> <span class="o">=</span> <span class="n">combination_noise_coinc_rate</span><span class="p">(</span><span class="n">rates</span><span class="p">,</span> <span class="n">slop</span><span class="p">)</span>
+    <span class="n">expected_coinc_log_rates</span><span class="p">[</span><span class="n">ifostring</span><span class="p">]</span> <span class="o">=</span> \
+        <span class="n">combination_noise_coinc_lograte</span><span class="p">(</span><span class="n">log_rates</span><span class="p">,</span> <span class="n">slop</span><span class="p">)</span>
 
     <span class="c1"># If more than one possible coincidence type exists,</span>
     <span class="c1"># calculate coincidence for subsets through recursion</span>
@@ -252,26 +257,27 @@
         <span class="k">for</span> <span class="n">subset</span> <span class="ow">in</span> <span class="n">subsets</span><span class="p">:</span>
             <span class="n">rates_subset</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">ifo</span> <span class="ow">in</span> <span class="n">subset</span><span class="p">:</span>
-                <span class="n">rates_subset</span><span class="p">[</span><span class="n">ifo</span><span class="p">]</span> <span class="o">=</span> <span class="n">rates</span><span class="p">[</span><span class="n">ifo</span><span class="p">]</span>
-            <span class="n">sub_coinc_rates</span> <span class="o">=</span> <span class="n">multiifo_noise_coinc_rate</span><span class="p">(</span><span class="n">rates_subset</span><span class="p">,</span> <span class="n">slop</span><span class="p">)</span>
+                <span class="n">rates_subset</span><span class="p">[</span><span class="n">ifo</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_rates</span><span class="p">[</span><span class="n">ifo</span><span class="p">]</span>
+            <span class="n">sub_coinc_rates</span> <span class="o">=</span> <span class="n">multiifo_noise_coinc_lograte</span><span class="p">(</span><span class="n">rates_subset</span><span class="p">,</span> <span class="n">slop</span><span class="p">)</span>
             <span class="c1"># add these sub-coincidences to the overall dictionary</span>
             <span class="k">for</span> <span class="n">sub_coinc</span> <span class="ow">in</span> <span class="n">sub_coinc_rates</span><span class="p">:</span>
-                <span class="n">expected_coinc_rates</span><span class="p">[</span><span class="n">sub_coinc</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_coinc_rates</span><span class="p">[</span><span class="n">sub_coinc</span><span class="p">]</span>
+                <span class="n">expected_coinc_log_rates</span><span class="p">[</span><span class="n">sub_coinc</span><span class="p">]</span> <span class="o">=</span> \
+                    <span class="n">sub_coinc_rates</span><span class="p">[</span><span class="n">sub_coinc</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">expected_coinc_rates</span></div>
+    <span class="k">return</span> <span class="n">expected_coinc_log_rates</span></div>
 
 
 <div class="viewcode-block" id="combination_noise_coinc_rate"><a class="viewcode-back" href="../../../pycbc.events.html#pycbc.events.coinc_rate.combination_noise_coinc_rate">[docs]</a><span class="k">def</span> <span class="nf">combination_noise_coinc_rate</span><span class="p">(</span><span class="n">rates</span><span class="p">,</span> <span class="n">slop</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the expected rate of noise coincidences for a combination of</span>
 <span class="sd">    detectors</span>
+<span class="sd">    WARNING: for high stat values, numerical underflow can occur</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    rates: dict</span>
-<span class="sd">        Dictionary keyed on ifo string</span>
-<span class="sd">        Value is a sequence of single-detector trigger rates, units assumed</span>
-<span class="sd">        to be Hz</span>
+<span class="sd">        Key: ifo string, Value: sequence of single-detector trigger rates,</span>
+<span class="sd">        units assumed to be Hz</span>
 <span class="sd">    slop: float</span>
 <span class="sd">        time added to maximum time-of-flight between detectors to account</span>
 <span class="sd">        for timing error</span>
@@ -279,22 +285,48 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    combo_coinc_rate: numpy array</span>
-<span class="sd">        Value is expected coincidence rate in the combination, units Hz</span>
+<span class="sd">        Expected coincidence rate in the combination, units Hz</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;combination_noise_coinc_rate() is liable to numerical &#39;</span>
+                    <span class="s1">&#39;underflows, use combination_noise_coinc_rate_log &#39;</span>
+                    <span class="s1">&#39;instead&#39;</span><span class="p">)</span>
+    <span class="n">log_rates</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="n">rates</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="c1"># exp may underflow</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">combination_noise_coinc_lograte</span><span class="p">(</span><span class="n">log_rates</span><span class="p">,</span> <span class="n">slop</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="combination_noise_coinc_lograte"><a class="viewcode-back" href="../../../pycbc.events.html#pycbc.events.coinc_rate.combination_noise_coinc_lograte">[docs]</a><span class="k">def</span> <span class="nf">combination_noise_coinc_lograte</span><span class="p">(</span><span class="n">log_rates</span><span class="p">,</span> <span class="n">slop</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the expected rate of noise coincidences for a combination of</span>
+<span class="sd">    detectors given log of single detector noise rates</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    log_rates: dict</span>
+<span class="sd">        Key: ifo string, Value: sequence of log single-detector trigger rates,</span>
+<span class="sd">        units assumed to be Hz</span>
+<span class="sd">    slop: float</span>
+<span class="sd">        time added to maximum time-of-flight between detectors to account</span>
+<span class="sd">        for timing error</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    combo_coinc_rate: numpy array</span>
+<span class="sd">        Expected log coincidence rate in the combination, units Hz</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># multiply product of trigger rates by the overlap time</span>
-    <span class="n">allowed_area</span> <span class="o">=</span> <span class="n">multiifo_noise_coincident_area</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">rates</span><span class="p">),</span> <span class="n">slop</span><span class="p">)</span>
+    <span class="n">allowed_area</span> <span class="o">=</span> <span class="n">multiifo_noise_coincident_area</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">log_rates</span><span class="p">),</span> <span class="n">slop</span><span class="p">)</span>
     <span class="c1"># list(dict.values()) is python-3-proof</span>
-    <span class="n">rateprod</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">rates</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">combo_coinc_rate</span> <span class="o">=</span> <span class="n">allowed_area</span> <span class="o">*</span> <span class="n">rateprod</span>
-
-    <span class="k">return</span> <span class="n">combo_coinc_rate</span></div>
+    <span class="n">rateprod</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">log_rates</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">allowed_area</span><span class="p">)</span> <span class="o">+</span> <span class="n">rateprod</span></div>
 
 
 <div class="viewcode-block" id="multiifo_noise_coincident_area"><a class="viewcode-back" href="../../../pycbc.events.html#pycbc.events.coinc_rate.multiifo_noise_coincident_area">[docs]</a><span class="k">def</span> <span class="nf">multiifo_noise_coincident_area</span><span class="p">(</span><span class="n">ifos</span><span class="p">,</span> <span class="n">slop</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    calculate the total extent of time offset between 2 detectors,</span>
+<span class="sd">    Calculate the total extent of time offset between 2 detectors,</span>
 <span class="sd">    or area of the 2d space of time offsets for 3 detectors, for</span>
 <span class="sd">    which a coincidence can be generated</span>
+<span class="sd">    Cannot yet handle more than 3 detectors.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -396,7 +428,7 @@
     <p>
         &copy; Copyright 2015, 2016, 2017, Alexander Nitz, Ian Harry, Christopher M. Biwer, Duncan A.  Brown, Josh Willis, and Tito Dal Canton
       <span class="lastupdated">
-        Last updated on Jul 03, 2019.
+        Last updated on Jul 05, 2019.
       </span>
 
     </p>
