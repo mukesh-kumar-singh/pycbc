@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycbc.workflow.jobsetup &mdash; PyCBC 1.14.dev2 documentation</title>
+  <title>pycbc.workflow.jobsetup &mdash; PyCBC 3e6f9f documentation</title>
   
 
   
@@ -60,6 +60,10 @@
 
           
             
+            
+              <div class="version">
+                1.14.1
+              </div>
             
           
 
@@ -1789,12 +1793,12 @@
         <span class="c1"># 1) the list of potentially EM bright injections</span>
         <span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POTENTIALLY_BRIGHT&#39;</span><span class="p">]</span>
         <span class="n">node</span><span class="o">.</span><span class="n">new_output_file_opt</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="s1">&#39;--output-bright&#39;</span><span class="p">,</span>
-                                 <span class="n">store_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retain_files</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span>
+                                 <span class="n">store_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retain_files</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="o">+</span><span class="n">tag</span><span class="p">)</span>
         <span class="c1"># 2) the list of EM dim injections</span>
         <span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DIM_ONLY&#39;</span><span class="p">]</span>
         <span class="n">node</span><span class="o">.</span><span class="n">new_output_file_opt</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span>
                                  <span class="n">ext</span><span class="p">,</span> <span class="s1">&#39;--output-dim&#39;</span><span class="p">,</span>
-                                 <span class="n">store_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retain_files</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span>
+                                 <span class="n">store_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retain_files</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="o">+</span><span class="n">tag</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">node</span></div></div>
 
 <div class="viewcode-block" id="LigolwCBCJitterSkylocExecutable"><a class="viewcode-back" href="../../../pycbc.workflow.html#pycbc.workflow.jobsetup.LigolwCBCJitterSkylocExecutable">[docs]</a><span class="k">class</span> <span class="nc">LigolwCBCJitterSkylocExecutable</span><span class="p">(</span><span class="n">Executable</span><span class="p">):</span>
@@ -2093,7 +2097,7 @@
     <p>
         &copy; Copyright 2015, 2016, 2017, Alexander Nitz, Ian Harry, Christopher M. Biwer, Duncan A.  Brown, Josh Willis, and Tito Dal Canton
       <span class="lastupdated">
-        Last updated on Jul 05, 2019.
+        Last updated on Jul 08, 2019.
       </span>
 
     </p>
